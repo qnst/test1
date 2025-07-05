@@ -14,8 +14,8 @@ namespace SoapTest
 
         public async Task Invoke(HttpContext context)
         {
-            // Handle HTTP POST requests for TestMoss operation (ASMX-style)
-            if (context.Request.Path.Value?.Equals("/MyService.asmx/TestMoss", StringComparison.OrdinalIgnoreCase) == true &&
+            // Handle HTTP POST requests for MOSSUploadFiles operation (ASMX-style)
+            if (context.Request.Path.Value?.Equals("/MossINGService.asmx/MOSSUploadFiles", StringComparison.OrdinalIgnoreCase) == true &&
                 context.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) &&
                 !IsSoapRequest(context))
             {
@@ -40,19 +40,19 @@ namespace SoapTest
         {
             try
             {
-                string aValue = "";
-                byte[] bBytes = Array.Empty<byte>();
+                string inputXML = "";
+                byte[] fileContents = Array.Empty<byte>();
 
                 // Handle different content types
                 if (context.Request.ContentType?.Contains("application/x-www-form-urlencoded") == true)
                 {
                     var form = await context.Request.ReadFormAsync();
-                    aValue = form["a"].FirstOrDefault() ?? "";
-                    var bString = form["b"].FirstOrDefault() ?? "";
+                    inputXML = form["_InputXML"].FirstOrDefault() ?? "";
+                    var fileString = form["filecontents"].FirstOrDefault() ?? "";
 
-                    if (!string.IsNullOrEmpty(bString))
+                    if (!string.IsNullOrEmpty(fileString))
                     {
-                        bBytes = TryConvertToBytes(bString);
+                        fileContents = TryConvertToBytes(fileString);
                     }
                 }
                 else if (context.Request.ContentType?.Contains("application/json") == true)
@@ -64,32 +64,32 @@ namespace SoapTest
                     {
                         var jsonDoc = JsonDocument.Parse(body);
 
-                        if (jsonDoc.RootElement.TryGetProperty("a", out var aElement))
+                        if (jsonDoc.RootElement.TryGetProperty("_InputXML", out var inputXMLElement))
                         {
-                            aValue = aElement.GetString() ?? "";
+                            inputXML = inputXMLElement.GetString() ?? "";
                         }
 
-                        if (jsonDoc.RootElement.TryGetProperty("b", out var bElement))
+                        if (jsonDoc.RootElement.TryGetProperty("filecontents", out var fileElement))
                         {
-                            if (bElement.ValueKind == JsonValueKind.String)
+                            if (fileElement.ValueKind == JsonValueKind.String)
                             {
-                                var bString = bElement.GetString();
-                                if (!string.IsNullOrEmpty(bString))
+                                var fileString = fileElement.GetString();
+                                if (!string.IsNullOrEmpty(fileString))
                                 {
-                                    bBytes = TryConvertToBytes(bString);
+                                    fileContents = TryConvertToBytes(fileString);
                                 }
                             }
-                            else if (bElement.ValueKind == JsonValueKind.Array)
+                            else if (fileElement.ValueKind == JsonValueKind.Array)
                             {
                                 var byteList = new List<byte>();
-                                foreach (var item in bElement.EnumerateArray())
+                                foreach (var item in fileElement.EnumerateArray())
                                 {
                                     if (item.TryGetByte(out var b))
                                     {
                                         byteList.Add(b);
                                     }
                                 }
-                                bBytes = byteList.ToArray();
+                                fileContents = byteList.ToArray();
                             }
                         }
                     }
@@ -99,30 +99,24 @@ namespace SoapTest
                     }
                 }
 
-                // Get the service and call TestMoss
-                var calculatorService = context.RequestServices.GetRequiredService<ICalculatorService>();
-                var result = calculatorService.TestMoss(aValue, bBytes);
+                // Get the service and call MOSSUploadFiles
+                var mossINGService = context.RequestServices.GetRequiredService<IMossINGService>();
+                var result = await mossINGService.MOSSUploadFiles(inputXML, fileContents);
 
                 // Add context information to the result for debugging
-                var contextInfo = $" [ContentType: {context.Request.ContentType}, Method: {context.Request.Method}]";
-                if (result.Field2 != null && !result.Field2.Contains("[ContentType"))
-                {
-                    result.Field2 += contextInfo;
-                }
+                var contextInfo = $" [ContentType: {context.Request.ContentType}, Method: {context.Request.Method}, FileSize: {fileContents.Length} bytes]";
+                var resultWithContext = result + contextInfo;
 
-                // Return ASMX-compatible XML response
+                // Return ASMX-compatible XML response for string result
                 var xmlResponse = $@"<?xml version=""1.0"" encoding=""utf-8""?>
-<MossModel xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://tempuri.org/"">
-    <Field1>{System.Security.SecurityElement.Escape(result.Field1 ?? "")}</Field1>
-    <Field2>{System.Security.SecurityElement.Escape(result.Field2 ?? "")}</Field2>
-</MossModel>";
+<string xmlns=""http://tempuri.org/"">{System.Security.SecurityElement.Escape(resultWithContext)}</string>";
 
                 context.Response.ContentType = "application/xml; charset=utf-8";
                 await context.Response.WriteAsync(xmlResponse, Encoding.UTF8);
             }
             catch (Exception ex)
             {
-                // Return error in XML format
+                // Return error in XML format compatible with string return type
                 var errorXml = $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <soap:Fault xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"">
     <faultcode>Server</faultcode>
