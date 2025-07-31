@@ -1,9 +1,0 @@
-clone the github test1 project
-and push the code to 1025, it will not push the chenbin-t1 branch to new remote
-
-switch to branch chenbin-t1
-push it to 1025
-
-it's working
-
-add new file add push it to both github and 1025
