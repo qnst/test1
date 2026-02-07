@@ -1,0 +1,1 @@
+define("MsPortalImpl/Widgets/ShellHeader/CopilotMenuUtil",["require","exports"],function(e,o){"use strict";o.handleCopilotMenuButtonFocus=void 0;o.handleCopilotMenuButtonFocus=()=>{const e=document.querySelector("div.fxs-blade-copilot-menu-container button");e&&e.focus()}});

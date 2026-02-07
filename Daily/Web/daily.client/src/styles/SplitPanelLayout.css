@@ -1,0 +1,18 @@
+.split-panel-layout {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.split-panel-left {
+    background-color: #fafafa;
+    border-right: 1px solid #e1e1e1;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.split-panel-right {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #ffffff;
+}

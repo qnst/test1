@@ -1,0 +1,1 @@
+define("@fluentui/react-menu/lib/contexts/menuTriggerContext",["exports","react"],function(e,t){"use strict";e.useMenuTriggerContext_unstable=e.MenuTriggerContextProvider=void 0;const r=t.createContext(void 0);e.MenuTriggerContextProvider=r.Provider;e.useMenuTriggerContext_unstable=()=>{var e;return null!==(e=t.useContext(r))&&void 0!==e&&e}});

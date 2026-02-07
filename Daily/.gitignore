@@ -1,0 +1,25 @@
+# Build outputs
+bin/
+obj/
+dist/
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# Node modules
+node_modules/
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

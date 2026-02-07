@@ -1,0 +1,356 @@
+/* Azure Portal Menu Styles - Extracted from actual Azure Portal */
+
+:root {
+  /* Azure Color Variables */
+  --colorTextPrimary: #323130;
+  --colorTextSecondary: #605e5c;
+  --colorTextDisabled: #a19f9d;
+  --colorContainerBackgroundPrimary: #ffffff;
+  --colorContainerBackgroundSecondary: #faf9f8;
+  --colorContainerBackgroundInverted: #323130;
+  --colorButtonBackgroundPrimary: #0078d4;
+  --colorButtonBackgroundHover: #106ebe;
+  --colorBorderPrimary: #edebe9;
+  --colorBorderSecondary: #d2d0ce;
+  --shadowLevel1: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadowLevel2: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadowLevel4: 0 4px 8px rgba(0, 0, 0, 0.14);
+}
+
+/* Menu Container */
+.azure-menu {
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  background: var(--colorContainerBackgroundPrimary);
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.azure-menu-scrollarea {
+  overflow: auto;
+  flex: 1 1 auto;
+}
+
+/* Menu Items */
+.azure-menu-grid {
+  padding: 0;
+}
+
+.azure-menu-grid .azure-listView-item {
+  display: flex;
+  font-size: 13px;
+  line-height: 1.385;
+  margin: 0;
+  list-style: none;
+}
+
+.azure-menu-grid .azure-menu-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 7px 20px;
+  box-sizing: border-box;
+  min-height: 32px;
+  overflow: hidden;
+  color: var(--colorTextPrimary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.azure-menu-grid .azure-menu-item:hover,
+.azure-menu-grid .azure-menu-item:focus,
+.azure-menu-grid .azure-menu-item:active {
+  text-decoration: none;
+  color: inherit;
+  background-color: var(--colorContainerBackgroundSecondary);
+}
+
+.azure-menu-grid .azure-menu-item.active {
+  background-color: var(--colorContainerBackgroundSecondary);
+  border-left: 2px solid var(--colorButtonBackgroundPrimary);
+  font-weight: 600;
+}
+
+/* Menu Icons */
+.azure-menu-icon {
+  height: 15px;
+  width: 15px;
+  flex: 0 0 auto;
+  position: relative;
+  padding-right: 10px;
+  align-self: flex-start;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.azure-menu-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--colorTextPrimary);
+}
+
+/* Group header icons */
+.azure-menu-icon.azure-menu-groupheader-icon {
+  align-self: center;
+  margin-top: 0;
+  width: 12px;
+  padding: 2px;
+}
+
+/* Nested menu item icons (slightly larger) */
+.azure-menu.azure-collapsible-menu .azure-listView-collapsibleGroup ul .azure-menu-item .azure-menu-icon {
+  height: 16px;
+  width: 16px;
+  padding-right: 0;
+  align-self: auto;
+}
+
+/* Menu Text */
+.azure-menu-listView-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+  white-space: nowrap;
+}
+
+/* Collapsible Groups */
+.azure-menu.azure-collapsible-menu .azure-listView-collapsibleGroup {
+  margin: 0;
+}
+
+.azure-menu.azure-collapsible-menu .azure-listView-collapsibleGroup .azure-menu-groupheader,
+.azure-menu.azure-collapsible-menu .azure-listView-collapsibleGroup .azure-listView-collapsible-groupheader {
+  border: 0;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.azure-menu.azure-collapsible-menu .azure-listView-collapsibleGroup .azure-listView-collapsible-groupheader {
+  padding: 6px 0 7px 20px;
+  column-gap: 8px;
+  display: flex;
+  align-items: center;
+  min-height: 32px;
+}
+
+.azure-menu.azure-collapsible-menu .azure-listView-collapsibleGroup .azure-menu-groupheader {
+  text-align: start;
+  line-height: normal;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--colorTextPrimary);
+}
+
+/* Collapse/Expand icon */
+.azure-menu.azure-collapsible-menu .azure-listView-collapsibleGroup .azure-menu-groupheader-icon {
+  width: 12px;
+  padding: 2px;
+  transition: transform 0.2s ease;
+}
+
+.azure-menu.azure-collapsible-menu .azure-listView-collapsibleGroup.collapsed .azure-menu-groupheader-icon {
+  transform: rotate(-90deg);
+}
+
+/* Nested Menu Items */
+.azure-menu.azure-collapsible-menu .azure-listView-collapsibleGroup ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.azure-menu.azure-collapsible-menu .azure-listView-collapsibleGroup.collapsed ul {
+  max-height: 0;
+  visibility: hidden;
+}
+
+.azure-menu.azure-collapsible-menu .azure-listView-collapsibleGroup:not(.collapsed) ul {
+  max-height: 2000px;
+  visibility: visible;
+}
+
+/* Nested items have extra left padding */
+.azure-menu.azure-collapsible-menu .azure-listView-collapsibleGroup:not(.azure-group-quickaccess) .azure-menu-item {
+  padding-left: 44px;
+}
+
+/* Favorite Icons */
+.azure-menu-favoriteicon {
+  opacity: 0;
+  width: 12px;
+  height: 15px;
+  flex: 0 0 auto;
+  margin-left: auto;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.azure-menu-item:hover .azure-menu-favoriteicon,
+.azure-menu-item:focus .azure-menu-favoriteicon,
+.azure-menu-item:active .azure-menu-favoriteicon,
+.azure-listView-item:focus-visible .azure-menu-favoriteicon {
+  opacity: 1;
+}
+
+.azure-menu-favoriteicon.favorited {
+  opacity: 1;
+  fill: var(--colorButtonBackgroundPrimary);
+}
+
+/* Search Header */
+.azure-menu.azure-collapsible-menu .azure-menu-header {
+  display: flex;
+  flex-flow: row;
+  gap: 4px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 7px 16px;
+}
+
+.azure-menu.azure-collapsible-menu .azure-menu-header .azure-menu-search {
+  flex-grow: 1;
+  flex-shrink: 1;
+  margin: 0;
+}
+
+.azure-menu-search {
+  flex: 0 0 auto;
+  min-height: 23px;
+  margin: 0;
+  padding: 7px 20px;
+}
+
+.azure-menu-search input {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1px solid var(--colorBorderSecondary);
+  border-radius: 2px;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.azure-menu-search input:focus {
+  outline: 1px solid var(--colorButtonBackgroundPrimary);
+  border-color: var(--colorButtonBackgroundPrimary);
+}
+
+/* Collapse/Expand All Button */
+.azure-menu.azure-collapsible-menu .azure-menu-header .azure-menu-collapseexpandall {
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.azure-menu.azure-collapsible-menu .azure-menu-header .azure-menu-collapseexpandall:hover {
+  background-color: var(--colorContainerBackgroundSecondary);
+}
+
+.azure-menu.azure-collapsible-menu .azure-menu-header .azure-menu-collapseexpandall svg {
+  width: 8px;
+  height: 8px;
+}
+
+/* Group Headers */
+.azure-menu-groupheader {
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.385;
+  line-height: 32px;
+  border-bottom-color: inherit;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+.azure-menu-grid .azure-listView-groupheader {
+  margin: 0;
+  padding: 0 20px;
+}
+
+/* Disabled States */
+.azure-menu-grid .azure-listView-item[aria-disabled="true"] .azure-menu-listView-item,
+.azure-menu-grid .azure-listView-item[aria-disabled="true"] .azure-menu-icon {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Footer */
+.azure-menu-footer {
+  font-size: 10px;
+  padding: 4px 12px;
+  text-align: center;
+  font-style: italic;
+  color: var(--colorTextSecondary);
+  border-top: 1px solid var(--colorBorderPrimary);
+  margin-top: auto;
+}
+
+/* Collapse Button at Bottom */
+.azure-menu-collapse-btn {
+  position: sticky;
+  bottom: 0;
+  padding: 12px 16px;
+  border-top: 1px solid var(--colorBorderPrimary);
+  background: var(--colorContainerBackgroundPrimary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--colorTextPrimary);
+  transition: background-color 0.1s ease;
+}
+
+.azure-menu-collapse-btn:hover {
+  background-color: var(--colorContainerBackgroundSecondary);
+}
+
+.azure-menu-collapse-btn svg {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.2s ease;
+}
+
+.azure-menu.collapsed .azure-menu-collapse-btn svg {
+  transform: rotate(180deg);
+}
+
+/* No Search Placeholder */
+.azure-menu-nosearch-placeholder {
+  display: block;
+  flex: 0 0 24px;
+  min-height: 24px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .azure-menu {
+    width: 200px;
+  }
+  
+  .azure-menu.collapsed {
+    width: 60px;
+  }
+  
+  .azure-menu.collapsed .azure-menu-listView-item,
+  .azure-menu.collapsed .azure-menu-groupheader {
+    display: none;
+  }
+}
